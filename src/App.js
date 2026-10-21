@@ -1,79 +1,90 @@
 import React, { useState } from "react";
 
 function App() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [feedback, setFeedback] = useState("");
 
-    // TODO 1:
-    // Create state variables for:
-    // name, email, feedback and error message
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState("");
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    // TODO 2:
-    // Create a function to handle form submission
+    const newErrors = {};
 
+    if (name.trim() === "") {
+      newErrors.name = "Please enter your name";
+    }
 
-    // TODO 3:
-    // Validate the following:
-    // 1. Name should not be empty
-    // 2. Email should not be empty
-    // 3. Feedback should not be empty
-    // 4. Email should contain @
+    if (email.trim() === "") {
+      newErrors.email = "Please enter your email";
+    } else if (!email.includes("@")) {
+      newErrors.email = "Please enter a valid email";
+    }
 
+    if (feedback.trim() === "") {
+      newErrors.feedback = "Please enter your feedback";
+    }
 
-    // TODO 4:
-    // Display the feedback form
+    setErrors(newErrors);
 
+    if (Object.keys(newErrors).length === 0) {
+      setSuccess("Feedback submitted successfully!");
+    } else {
+      setSuccess("");
+    }
+  };
 
-    return (
-        <div className="container">
+  return (
+    <div>
+      <h1>Student Feedback Form</h1>
 
-            <h1>Student Feedback Form</h1>
-
-            <form>
-
-                <div>
-                    <label>Name:</label>
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Enter your name"
-                    />
-                </div>
-
-                <br />
-
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter your email"
-                    />
-                </div>
-
-                <br />
-
-                <div>
-                    <label>Feedback:</label>
-                    <br />
-                    <textarea
-                        id="feedback"
-                        rows="5"
-                        placeholder="Enter your feedback"
-                    ></textarea>
-                </div>
-
-                <br />
-
-                {/* Display validation error here */}
-
-                <button type="submit">
-                    Submit Feedback
-                </button>
-
-            </form>
-
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Student Name:</label>
+          <br />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {errors.name && <p>{errors.name}</p>}
         </div>
-    );
+
+        <br />
+
+        <div>
+          <label>Email:</label>
+          <br />
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {errors.email && <p>{errors.email}</p>}
+        </div>
+
+        <br />
+
+        <div>
+          <label>Feedback:</label>
+          <br />
+          <textarea
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+          />
+          {errors.feedback && <p>{errors.feedback}</p>}
+        </div>
+
+        <br />
+
+        <button type="submit">Submit</button>
+
+        {success && <p>{success}</p>}
+      </form>
+    </div>
+  );
 }
 
 export default App;
